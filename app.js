@@ -87,6 +87,8 @@ registerButton.addEventListener('click', () => {
                 y: 300,
                 inventory: []
             });
+            // Automatically sign in the user after registration
+            return signInWithEmailAndPassword(auth, email, password);
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -102,20 +104,36 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
         playerId = user.uid;
         playerRef = ref(database, 'players/' + playerId);
-        set(playerRef, {
-            x: 400,
-            y: 300,
-            inventory: []
-        });
+
+        onValue(playerRef, (snapshot) => {
+            if (!snapshot.exists()) {
+                set(playerRef, {
+                    x: 400,
+                    y: 300,
+                    inventory: []
+                });
+            }
+        }, { onlyOnce: true });
+
 
         loginContainer.style.display = 'none';
+        registerContainer.style.display = 'none';
         gameContainer.style.display = 'block';
 
         const backgroundMusic = document.getElementById('background-music');
         backgroundMusic.play();
 
-        initializeItems();
-        initializeEnvironment();
+        onValue(ref(database, 'items'), (snapshot) => {
+            if (!snapshot.exists()) {
+                initializeItems();
+            }
+        }, { onlyOnce: true });
+
+        onValue(ref(database, 'environment'), (snapshot) => {
+            if (!snapshot.exists()) {
+                initializeEnvironment();
+            }
+        }, { onlyOnce: true });
 
         onValue(ref(database, 'players'), (snapshot) => {
             const players = snapshot.val();
