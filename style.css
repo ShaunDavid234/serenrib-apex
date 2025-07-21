@@ -1,0 +1,104 @@
+body {
+    background-color: #1a1a2e;
+    color: #ffffff;
+    font-family: 'Cinzel', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#login-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#login-container h2 {
+    margin-bottom: 20px;
+}
+
+#login-container input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #c89b3f;
+    background-color: #1a1a2e;
+    color: #ffffff;
+}
+
+#login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #c89b3f;
+    color: #1a1a2e;
+    border: none;
+    cursor: pointer;
+}
+
+#game-container {
+    width: 800px;
+    height: 600px;
+    background-image: url('https://i.imgur.com/OFBf5uJ.png');
+    background-size: cover;
+    border: 5px solid #c89b3f;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #c89b3f;
+    position: relative;
+    overflow: hidden;
+}
+
+#player {
+    width: 32px;
+    height: 48px;
+    background-image: url('https://i.imgur.com/wOFJg3T.png');
+    background-position: 0 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.player {
+    width: 32px;
+    height: 48px;
+    background-image: url('https://i.imgur.com/wOFJg3T.png');
+    background-position: 0 0;
+    position: absolute;
+    transition: left 0.1s linear, top 0.1s linear;
+}
+
+.player.walking {
+    animation: walk 0.6s steps(4) infinite;
+}
+
+@keyframes walk {
+    from { background-position: 0 0; }
+    to { background-position: -200px 0; }
+}
+
+.item {
+    width: 32px;
+    height: 32px;
+    background-image: url('https://i.imgur.com/ABV3oVd.png');
+    background-size: contain;
+    position: absolute;
+}
+
+.tree {
+    width: 64px;
+    height: 64px;
+    background-image: url('https://i.imgur.com/N0O8Z2H.png');
+    background-size: contain;
+    position: absolute;
+}
+
+.river {
+    width: 10px;
+    height: 10px;
+    background-color: #3e86ab;
+    position: absolute;
+}
