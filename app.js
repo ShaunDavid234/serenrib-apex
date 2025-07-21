@@ -30,7 +30,7 @@ const registerPasswordInput = document.getElementById('register-password');
 const registerButton = document.getElementById('register-button');
 const switchToRegisterLink = document.getElementById('switch-to-register');
 const switchToLoginLink = document.getElementById('switch-to-login');
-const player = document.getElementById('player');
+const playerElement = document.getElementById('player');
 
 let playerId;
 let playerRef;
@@ -123,18 +123,6 @@ onAuthStateChanged(auth, (user) => {
         const backgroundMusic = document.getElementById('background-music');
         backgroundMusic.play();
 
-        onValue(ref(database, 'items'), (snapshot) => {
-            if (!snapshot.exists()) {
-                initializeItems();
-            }
-        }, { onlyOnce: true });
-
-        onValue(ref(database, 'environment'), (snapshot) => {
-            if (!snapshot.exists()) {
-                initializeEnvironment();
-            }
-        }, { onlyOnce: true });
-
         onValue(ref(database, 'players'), (snapshot) => {
             const players = snapshot.val();
             if (players) {
@@ -198,6 +186,22 @@ onAuthStateChanged(auth, (user) => {
                 });
             }
         });
+    } else {
+        loginContainer.style.display = 'block';
+        registerContainer.style.display = 'none';
+        gameContainer.style.display = 'none';
+
+        onValue(ref(database, 'items'), (snapshot) => {
+            if (!snapshot.exists()) {
+                initializeItems();
+            }
+        }, { onlyOnce: true });
+
+        onValue(ref(database, 'environment'), (snapshot) => {
+            if (!snapshot.exists()) {
+                initializeEnvironment();
+            }
+        }, { onlyOnce: true });
     }
 });
 
@@ -245,10 +249,9 @@ function initializeEnvironment() {
 function createPlayerElement(id) {
     const playerElement = document.createElement('div');
     playerElement.id = id;
+    playerElement.classList.add('player');
     if (id === playerId) {
         playerElement.id = 'player';
-    } else {
-        playerElement.classList.add('player');
     }
     gameContainer.appendChild(playerElement);
     return playerElement;
@@ -280,10 +283,10 @@ let isWalking = false;
 
 document.addEventListener('keydown', (e) => {
     if (!playerId) return;
-    const playerElement = document.getElementById('player');
+    const currentPlayerElement = document.getElementById('player');
     const playerPosition = {
-        x: parseInt(playerElement.style.left) || 400,
-        y: parseInt(playerElement.style.top) || 300
+        x: parseInt(currentPlayerElement.style.left) || 400,
+        y: parseInt(currentPlayerElement.style.top) || 300
     };
 
     if (e.key === 'ArrowUp') {
@@ -300,15 +303,16 @@ document.addEventListener('keydown', (e) => {
 
     if (!isWalking) {
         isWalking = true;
-        playerElement.classList.add('walking');
+        currentPlayerElement.classList.add('walking');
     }
 
     checkForItemCollision();
 });
 
 function checkForItemCollision() {
-    const playerElement = document.getElementById('player');
-    const playerRect = playerElement.getBoundingClientRect();
+    const currentPlayerElement = document.getElementById('player');
+    if (!currentPlayerElement) return;
+    const playerRect = currentPlayerElement.getBoundingClientRect();
     const items = document.querySelectorAll('.item');
     items.forEach((item) => {
         const itemRect = item.getBoundingClientRect();
@@ -333,7 +337,9 @@ function checkForItemCollision() {
 
 document.addEventListener('keyup', (e) => {
     if (!playerId) return;
-    const playerElement = document.getElementById('player');
-    isWalking = false;
-    playerElement.classList.remove('walking');
+    const currentPlayerElement = document.getElementById('player');
+    if(currentPlayerElement) {
+        isWalking = false;
+        currentPlayerElement.classList.remove('walking');
+    }
 });
