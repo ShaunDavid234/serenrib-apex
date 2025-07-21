@@ -7,13 +7,44 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden;
 }
 
-#login-container {
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#login-container, #register-container {
     background-color: rgba(0, 0, 0, 0.7);
     padding: 40px;
     border-radius: 10px;
     text-align: center;
+    width: 300px;
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#login-container.hidden, #register-container.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+}
+#login-container h1, #register-container h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: #ffeb3b;
+    text-shadow: 0 0 10px #ffeb3b;
+}
+
+#login-container p, #register-container p {
+    margin-top: 15px;
+}
+#login-container a, #register-container a {
+    color: #c89b3f;
+    text-decoration: none;
 }
 
 #login-container h2 {
@@ -28,6 +59,13 @@ body {
     border: 1px solid #c89b3f;
     background-color: #1a1a2e;
     color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+#login-container input:focus, #register-container input:focus {
+    outline: none;
+    border-color: #ffeb3b;
+    box-shadow: 0 0 10px #ffeb3b;
 }
 
 #login-container button {
@@ -37,6 +75,17 @@ body {
     color: #1a1a2e;
     border: none;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#login-container button:hover, #register-container button:hover {
+    background-color: #ffeb3b;
+    box-shadow: 0 0 10px #ffeb3b;
+}
+
+#login-container.submitting, #register-container.submitting {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #ffeb3b;
 }
 
 #game-container {

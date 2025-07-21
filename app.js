@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { items } from './items.js';
 
 // Your web app's Firebase configuration
@@ -20,24 +20,81 @@ const database = getDatabase(app);
 const auth = getAuth(app);
 
 const loginContainer = document.getElementById('login-container');
+const registerContainer = document.getElementById('register-container');
 const gameContainer = document.getElementById('game-container');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
+const loginEmailInput = document.getElementById('login-email');
+const loginPasswordInput = document.getElementById('login-password');
 const loginButton = document.getElementById('login-button');
+const registerEmailInput = document.getElementById('register-email');
+const registerPasswordInput = document.getElementById('register-password');
+const registerButton = document.getElementById('register-button');
+const switchToRegisterLink = document.getElementById('switch-to-register');
+const switchToLoginLink = document.getElementById('switch-to-login');
 const player = document.getElementById('player');
 
 let playerId;
 let playerRef;
 
 loginButton.addEventListener('click', () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
+    const email = loginEmailInput.value;
+    const password = loginPasswordInput.value;
+
+    loginContainer.classList.add('submitting');
 
     signInWithEmailAndPassword(auth, email, password)
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.error('Login failed:', errorCode, errorMessage);
+        })
+        .finally(() => {
+            loginContainer.classList.remove('submitting');
+        });
+});
+
+switchToRegisterLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginContainer.classList.add('hidden');
+    setTimeout(() => {
+        loginContainer.style.display = 'none';
+        registerContainer.style.display = 'block';
+        registerContainer.classList.remove('hidden');
+    }, 500);
+});
+
+switchToLoginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    registerContainer.classList.add('hidden');
+    setTimeout(() => {
+        registerContainer.style.display = 'none';
+        loginContainer.style.display = 'block';
+        loginContainer.classList.remove('hidden');
+    }, 500);
+});
+
+registerButton.addEventListener('click', () => {
+    const email = registerEmailInput.value;
+    const password = registerPasswordInput.value;
+
+    registerContainer.classList.add('submitting');
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            const playerRef = ref(database, 'players/' + user.uid);
+            set(playerRef, {
+                x: 400,
+                y: 300,
+                inventory: []
+            });
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error('Registration failed:', errorCode, errorMessage);
+        })
+        .finally(() => {
+            registerContainer.classList.remove('submitting');
         });
 });
 
