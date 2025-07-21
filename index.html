@@ -3,31 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fantasy Multiplayer Game</title>
+    <title>Boundless Eden (Horror)</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="login-container">
-        <h1>Fantasy Life</h1>
-        <h2>Login</h2>
-        <input type="email" id="login-email" placeholder="Email">
-        <input type="password" id="login-password" placeholder="Password">
-        <button id="login-button">Login</button>
-        <p>Don't have an account? <a href="#" id="switch-to-register">Register here</a></p>
+    <div class="main-menu">
+        <h1 class="game-title">Boundless Eden</h1>
+        <nav>
+            <ul>
+                <li><a href="game.html">Start New Game</a></li>
+                <li><a href="#" id="continue-game" class="disabled">Continue Game</a></li>
+                <li><a href="#">Options</a></li>
+                <li><a href="#">Credits</a></li>
+            </ul>
+        </nav>
     </div>
-    <div id="register-container" style="display: none;">
-        <h1>Fantasy Life</h1>
-        <h2>Register</h2>
-        <input type="email" id="register-email" placeholder="Email">
-        <input type="password" id="register-password" placeholder="Password">
-        <button id="register-button">Register</button>
-        <p>Already have an account? <a href="#" id="switch-to-login">Login here</a></p>
-    </div>
-    <div id="game-container" style="display: none;">
-        <div id="player"></div>
-    </div>
-    <audio id="background-music" src="https://www.chosic.com/wp-content/uploads/2021/07/A-Hopeful-Beginning.mp3" loop></audio>
-    <script type="module" src="app.js"></script>
-    <script src="particles.js"></script>
+    <audio id="ambient-menu-sound" src="assets/sounds/ambient_menu.mp3" loop></audio>
+    <script src="game.js"></script>
 </body>
 </html>

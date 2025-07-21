@@ -13,17 +13,37 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('assets/textures/main_menu_bg.png'); /* Placeholder */
+    background-image: url('assets/textures/main_menu_bg.jpg'); /* Placeholder */
     background-size: cover;
     background-position: center;
     text-align: center;
 }
 
-.main-menu h1 {
-    font-family: 'GothicFont', sans-serif; /* Placeholder for a custom gothic font */
-    font-size: 4em;
+.game-title {
+    font-family: 'Creepster', cursive;
+    font-size: 6em;
     color: #8B0000;
-    text-shadow: 2px 2px 4px #000;
+    text-shadow: 3px 3px 6px #000, 0 0 20px #ff0000;
+    animation: flicker 1.5s infinite alternate;
+}
+
+@keyframes flicker {
+
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+      text-shadow:
+      0 0 4px #fff,
+      0 0 11px #fff,
+      0 0 19px #fff,
+      0 0 40px #f09,
+      0 0 80px #f09,
+      0 0 90px #f09,
+      0 0 100px #f09,
+      0 0 150px #f09;
+  }
+
+  20%, 24%, 55% {
+      text-shadow: none;
+  }
 }
 
 .main-menu nav ul {
@@ -42,18 +62,21 @@ body {
     padding: 10px 20px;
     border: 1px solid #8B0000;
     border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
 .main-menu nav ul li a:hover {
     background-color: #8B0000;
     color: #fff;
+    box-shadow: 0 0 15px #ff0000;
 }
 
 .main-menu nav ul li a.disabled {
     color: #555;
     border-color: #555;
     pointer-events: none;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 #game-canvas {
